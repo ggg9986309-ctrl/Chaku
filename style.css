@@ -1924,3 +1924,193 @@ footer {
     transform: scale(1.08);
   }
 }
+
+/* =========================================
+   KIRUU INSTAGRAM 3D LIVE BUTTON
+   ========================================= */
+
+.kiruu-instagram {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  min-width: 185px;
+  padding: 12px 18px 12px 12px;
+
+  color: #fff;
+  text-decoration: none;
+
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 22px;
+
+  background: rgba(15,10,25,.72);
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 15px 45px rgba(0,0,0,.45),
+    0 0 30px rgba(168,85,247,.22);
+
+  transform-style: preserve-3d;
+
+  animation:
+    kiruuFloat 3s ease-in-out infinite,
+    kiruuTilt 6s ease-in-out infinite;
+
+  transition: .35s ease;
+}
+
+.kiruu-instagram:hover {
+  transform: translateY(-8px) scale(1.05) rotateX(5deg);
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.55),
+    0 0 45px rgba(168,85,247,.4);
+}
+
+/* Instagram icon */
+
+.insta-icon {
+  width: 45px;
+  height: 45px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 14px;
+
+  font-size: 32px;
+  font-weight: 900;
+
+  background:
+    linear-gradient(
+      135deg,
+      #833ab4,
+      #fd1d1d,
+      #fcb045
+    );
+
+  box-shadow:
+    0 0 20px rgba(225,48,108,.45);
+
+  animation: instaSpin 5s linear infinite;
+}
+
+/* Text */
+
+.insta-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.insta-text small {
+  font-size: 9px;
+  letter-spacing: 2px;
+  opacity: .6;
+}
+
+.insta-text b {
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+/* Orbit ring */
+
+.insta-orbit {
+  position: absolute;
+  left: 7px;
+  top: 7px;
+
+  width: 55px;
+  height: 55px;
+
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 50%;
+
+  animation: orbitSpin 3s linear infinite;
+}
+
+/* Floating */
+
+@keyframes kiruuFloat {
+  0%,100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+/* 3D tilt */
+
+@keyframes kiruuTilt {
+  0%,100% {
+    rotate: 0deg;
+  }
+
+  25% {
+    rotate: 1deg;
+  }
+
+  75% {
+    rotate: -1deg;
+  }
+}
+
+/* Icon rotation */
+
+@keyframes instaSpin {
+  0%,100% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(8deg) scale(1.08);
+  }
+}
+
+/* Orbit */
+
+@keyframes orbitSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+  .kiruu-instagram {
+    right: 14px;
+    bottom: 14px;
+
+    min-width: auto;
+    padding: 9px 13px 9px 9px;
+
+    border-radius: 18px;
+  }
+
+  .insta-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 28px;
+  }
+
+  .insta-text b {
+    font-size: 12px;
+  }
+
+  .insta-text small {
+    font-size: 8px;
+  }
+}
