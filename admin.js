@@ -286,3 +286,22 @@ async function deleteApp(id){
 
 
 loadApps();
+const iconFile = document.getElementById("iconFile");
+const iconPreview = document.getElementById("iconPreview");
+
+if (iconFile) {
+  iconFile.addEventListener("change", () => {
+    const file = iconFile.files[0];
+
+    if (!file) {
+      iconPreview.innerHTML = "";
+      return;
+    }
+
+    const url = URL.createObjectURL(file);
+
+    iconPreview.innerHTML = `
+      <img src="${url}" alt="App Icon Preview">
+    `;
+  });
+}
