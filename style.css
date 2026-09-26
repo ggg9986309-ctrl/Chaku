@@ -1776,3 +1776,151 @@ footer {
     animation: none;
   }
 }
+/* =================================
+   KIRUU STORE INTRO ANIMATION
+   ================================= */
+
+#kiruuIntro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at center,
+      rgba(124,58,237,.18),
+      transparent 35%),
+    #020207;
+
+  animation: introExit 1s ease 3.8s forwards;
+  pointer-events: none;
+}
+
+.intro-glow {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: rgba(139,92,246,.35);
+  filter: blur(80px);
+  animation: introGlow 2.5s ease-in-out infinite alternate;
+}
+
+.intro-content {
+  position: relative;
+  text-align: center;
+  transform: scale(.7);
+  opacity: 0;
+  animation: introEnter 1.2s cubic-bezier(.16,1,.3,1) .25s forwards;
+}
+
+.intro-small {
+  font-size: 12px;
+  letter-spacing: 8px;
+  color: rgba(255,255,255,.55);
+  margin-bottom: 14px;
+}
+
+.intro-name {
+  font-size: clamp(38px, 8vw, 82px);
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: white;
+  text-shadow:
+    0 0 15px rgba(255,255,255,.35),
+    0 0 45px rgba(139,92,246,.5);
+}
+
+.intro-name span {
+  background: linear-gradient(
+    90deg,
+    #fff,
+    #a78bfa,
+    #67e8f9,
+    #fff
+  );
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: kiruuGradient 2s linear infinite;
+}
+
+.intro-line {
+  width: 0;
+  height: 2px;
+  margin: 20px auto 15px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #a78bfa,
+    #67e8f9,
+    transparent
+  );
+  animation: introLine 1.2s ease 1.2s forwards;
+}
+
+.intro-loading {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: rgba(255,255,255,.45);
+  opacity: 0;
+  animation: introLoading 1s ease 2s forwards;
+}
+
+@keyframes introEnter {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes introGlow {
+  from {
+    transform: scale(.8);
+    opacity: .35;
+  }
+
+  to {
+    transform: scale(1.35);
+    opacity: .7;
+  }
+}
+
+@keyframes kiruuGradient {
+  to {
+    background-position: 300% center;
+  }
+}
+
+@keyframes introLine {
+  to {
+    width: min(420px, 75vw);
+  }
+}
+
+@keyframes introLoading {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes introExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  70% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.08);
+  }
+}
