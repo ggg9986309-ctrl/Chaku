@@ -908,3 +908,68 @@ footer b{
         gap:8px;
     }
 }
+.admin-lock {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #050509;
+  backdrop-filter: blur(20px);
+}
+
+.lock-box {
+  width: min(400px, 90%);
+  padding: 35px 25px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 24px;
+  background: rgba(15,15,25,.95);
+  box-shadow: 0 25px 80px rgba(0,0,0,.6);
+}
+
+.lock-icon {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.lock-box h2 {
+  margin: 0 0 8px;
+  color: white;
+}
+
+.lock-box p {
+  color: #999;
+  margin-bottom: 22px;
+}
+
+#adminKeyInput {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #333;
+  background: #09090f;
+  color: white;
+  outline: none;
+  margin-bottom: 12px;
+}
+
+.lock-box button {
+  width: 100%;
+  padding: 14px;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  background: #8b5cf6;
+  color: white;
+}
+
+#keyError {
+  color: #ff5c7a;
+  margin-top: 12px;
+  min-height: 20px;
+}
+
