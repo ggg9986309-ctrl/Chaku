@@ -2114,3 +2114,136 @@ footer {
     font-size: 8px;
   }
 }
+
+/* ================================
+   KIRUU STORE - BIG PREMIUM TEXT
+================================ */
+
+body {
+  font-size: 17px;
+}
+
+/* Main headings */
+h1 {
+  font-size: clamp(38px, 6vw, 72px) !important;
+  font-weight: 900 !important;
+  letter-spacing: -1px;
+}
+
+h2 {
+  font-size: clamp(30px, 4vw, 48px) !important;
+  font-weight: 850 !important;
+}
+
+h3 {
+  font-size: 23px !important;
+  font-weight: 800 !important;
+}
+
+/* Logo / Store name */
+.logo,
+.brand,
+.site-logo,
+.store-logo {
+  font-size: 25px !important;
+  font-weight: 900 !important;
+  letter-spacing: .5px;
+}
+
+/* Normal website text */
+p,
+.description,
+.hero-text,
+.subtitle {
+  font-size: 17px !important;
+  line-height: 1.7 !important;
+}
+
+/* App cards */
+.app-card h3,
+.card-title {
+  font-size: 21px !important;
+  font-weight: 800 !important;
+}
+
+.app-card p,
+.card-description {
+  font-size: 15px !important;
+  line-height: 1.55 !important;
+}
+
+/* Buttons */
+button,
+.btn,
+a.btn {
+  font-size: 16px !important;
+  font-weight: 750 !important;
+  padding: 13px 20px !important;
+}
+
+/* Search */
+input,
+.search-input {
+  font-size: 17px !important;
+}
+
+/* Category buttons */
+.filter-btn,
+.category-btn {
+  font-size: 15px !important;
+  font-weight: 750 !important;
+}
+
+/* Stats */
+.stat-number {
+  font-size: 32px !important;
+  font-weight: 900 !important;
+}
+
+.stat-label {
+  font-size: 15px !important;
+  font-weight: 650 !important;
+}
+
+/* App details */
+.app-meta,
+.app-info,
+.meta {
+  font-size: 15px !important;
+}
+
+/* Footer */
+footer {
+  font-size: 15px !important;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  body {
+    font-size: 16px;
+  }
+
+  h1 {
+    font-size: 40px !important;
+  }
+
+  h2 {
+    font-size: 30px !important;
+  }
+
+  h3 {
+    font-size: 21px !important;
+  }
+
+  p,
+  .description,
+  .hero-text,
+  .subtitle {
+    font-size: 16px !important;
+  }
+
+  button,
+  .btn {
+    font-size: 15px !important;
+  }
+}
