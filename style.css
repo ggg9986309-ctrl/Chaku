@@ -3074,3 +3074,508 @@ body > *:not(.kiruu-live-bg) {
     grid-template-columns: 1fr;
   }
 }
+
+/* =========================
+   KIRUU INSTAGRAM LEGENDS
+========================= */
+
+.insta-legends {
+  position: relative;
+  padding: 100px 20px;
+  overflow: hidden;
+  perspective: 1200px;
+}
+
+.insta-title {
+  text-align: center;
+  position: relative;
+  z-index: 5;
+  margin-bottom: 55px;
+}
+
+.insta-title span {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  opacity: .75;
+}
+
+.insta-title h2 {
+  margin: 12px 0 8px;
+  font-size: clamp(32px, 6vw, 58px);
+  font-weight: 1000;
+  letter-spacing: -2px;
+}
+
+.insta-title h2 b {
+  background: linear-gradient(
+    90deg,
+    #ff3cac,
+    #784ba0,
+    #2b86c5
+  );
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.insta-title p {
+  opacity: .55;
+  font-size: 14px;
+}
+
+
+.insta-stage {
+  max-width: 1050px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  position: relative;
+}
+
+
+.insta-card {
+  position: relative;
+  min-height: 430px;
+  padding: 42px 30px 30px;
+  border-radius: 32px;
+  overflow: hidden;
+  text-align: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.09),
+      rgba(255,255,255,.025)
+    );
+
+  border: 1px solid rgba(255,255,255,.13);
+
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.45),
+    inset 0 0 50px rgba(255,255,255,.025);
+
+  transform-style: preserve-3d;
+
+  animation:
+    cardFloat 5s ease-in-out infinite;
+}
+
+
+.insta-card:nth-child(2) {
+  animation-delay: -2.5s;
+}
+
+
+/* moving outer glow */
+
+.insta-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 34px;
+
+  background:
+    conic-gradient(
+      from 0deg,
+      transparent,
+      #ff3cac,
+      transparent,
+      #784ba0,
+      transparent,
+      #2b86c5,
+      transparent
+    );
+
+  animation: borderSpin 5s linear infinite;
+
+  z-index: -2;
+}
+
+
+.insta-card::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 30px;
+
+  background: #090812;
+
+  z-index: -1;
+}
+
+
+/* moving shine */
+
+.shine {
+  position: absolute;
+  width: 180%;
+  height: 100px;
+  left: -40%;
+  top: 35%;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.10),
+    transparent
+  );
+
+  transform: rotate(-25deg);
+
+  animation: shineMove 4s linear infinite;
+
+  pointer-events: none;
+}
+
+
+/* rotating ring */
+
+.spin-ring {
+  position: absolute;
+  width: 270px;
+  height: 270px;
+
+  left: 50%;
+  top: 115px;
+
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255,255,255,.10);
+
+  box-shadow:
+    0 0 35px rgba(255,60,172,.18),
+    inset 0 0 35px rgba(120,75,160,.12);
+
+  animation: ringRotate 9s linear infinite;
+}
+
+
+.spin-ring::before,
+.spin-ring::after {
+  content: "";
+  position: absolute;
+
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  background: #ff3cac;
+
+  box-shadow:
+    0 0 15px #ff3cac,
+    0 0 35px #ff3cac;
+}
+
+.spin-ring::before {
+  top: -6px;
+  left: 50%;
+}
+
+.spin-ring::after {
+  bottom: -6px;
+  right: 25%;
+}
+
+
+/* role */
+
+.role {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 8px 15px;
+
+  border-radius: 50px;
+
+  background: rgba(255,255,255,.07);
+
+  border: 1px solid rgba(255,255,255,.12);
+
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 2px;
+
+  position: relative;
+  z-index: 3;
+}
+
+
+/* instagram logo */
+
+.insta-logo {
+  width: 115px;
+  height: 115px;
+
+  margin: 42px auto 25px;
+
+  border-radius: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #feda75,
+      #fa7e1e,
+      #d62976,
+      #962fbf,
+      #4f5bd5
+    );
+
+  box-shadow:
+    0 0 30px rgba(214,41,118,.35),
+    0 0 70px rgba(150,47,191,.18);
+
+  animation: instaPulse 2.8s ease-in-out infinite;
+
+  position: relative;
+  z-index: 3;
+}
+
+
+.insta-logo::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 18px;
+
+  border: 5px solid white;
+
+  border-radius: 25px;
+}
+
+
+.insta-logo::after {
+  content: "";
+
+  position: absolute;
+
+  width: 20px;
+  height: 20px;
+
+  border: 5px solid white;
+
+  border-radius: 50%;
+}
+
+
+.insta-logo span {
+  display: none;
+}
+
+
+/* names */
+
+.person-name {
+  position: relative;
+  z-index: 3;
+
+  font-size: 32px;
+  font-weight: 1000;
+  letter-spacing: 3px;
+}
+
+
+.person-name strong {
+  display: inline;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ff3cac,
+      #784ba0,
+      #2b86c5
+    );
+
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+
+.person-line {
+  position: relative;
+  z-index: 3;
+
+  margin-top: 7px;
+
+  font-size: 10px;
+  letter-spacing: 3px;
+
+  opacity: .5;
+}
+
+
+/* button */
+
+.insta-follow {
+  position: relative;
+  z-index: 5;
+
+  margin: 30px auto 0;
+
+  width: min(100%, 330px);
+
+  min-height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  border-radius: 17px;
+
+  text-decoration: none;
+
+  color: white;
+
+  font-size: 11px;
+  font-weight: 1000;
+  letter-spacing: 1.5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,60,172,.22),
+      rgba(120,75,160,.25),
+      rgba(43,134,197,.22)
+    );
+
+  border: 1px solid rgba(255,255,255,.15);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.25);
+
+  transition: .3s ease;
+}
+
+
+.insta-follow:hover {
+  transform: translateY(-4px) scale(1.02);
+
+  box-shadow:
+    0 15px 40px rgba(255,60,172,.25);
+}
+
+
+.ig-symbol {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+
+.insta-follow b {
+  font-size: 18px;
+}
+
+
+/* animations */
+
+@keyframes cardFloat {
+
+  0%, 100% {
+    transform:
+      translateY(0)
+      rotateX(0deg)
+      rotateY(0deg);
+  }
+
+  50% {
+    transform:
+      translateY(-12px)
+      rotateX(1deg)
+      rotateY(-1deg);
+  }
+
+}
+
+
+@keyframes borderSpin {
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+@keyframes ringRotate {
+
+  to {
+    transform:
+      translateX(-50%)
+      rotate(360deg);
+  }
+
+}
+
+
+@keyframes shineMove {
+
+  0% {
+    transform:
+      translateX(-70%)
+      rotate(-25deg);
+  }
+
+  100% {
+    transform:
+      translateX(70%)
+      rotate(-25deg);
+  }
+
+}
+
+
+@keyframes instaPulse {
+
+  0%, 100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.06);
+  }
+
+}
+
+
+/* mobile */
+
+@media (max-width: 700px) {
+
+  .insta-legends {
+    padding: 75px 15px;
+  }
+
+  .insta-stage {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .insta-card {
+    min-height: 400px;
+  }
+
+  .insta-logo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .spin-ring {
+    width: 245px;
+    height: 245px;
+  }
+
+  .person-name {
+    font-size: 28px;
+  }
+
+}
