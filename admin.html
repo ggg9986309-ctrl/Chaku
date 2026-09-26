@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -488,3 +489,45 @@
 
 </body>
 </html>
+
+
+<div id="adminLock" class="admin-lock">
+  <div class="lock-box">
+    <div class="lock-icon">🔐</div>
+    <h2>KIRUU ADMIN</h2>
+    <p>Enter admin key to continue</p>
+
+    <input
+      id="adminKeyInput"
+      type="password"
+      placeholder="Enter Admin Key"
+      autocomplete="off"
+    />
+
+    <button onclick="unlockAdmin()">UNLOCK ADMIN</button>
+
+    <div id="keyError"></div>
+  </div>
+</div>
+<script>
+const KIRUU_ADMIN_KEY = "90190482989535573493";
+
+function unlockAdmin() {
+  const input = document.getElementById("adminKeyInput");
+  const error = document.getElementById("keyError");
+
+  if (input.value === KIRUU_ADMIN_KEY) {
+    sessionStorage.setItem("kiruu_admin_unlocked", "true");
+    document.getElementById("adminLock").style.display = "none";
+  } else {
+    error.textContent = "❌ Wrong admin key";
+    input.value = "";
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  if (sessionStorage.getItem("kiruu_admin_unlocked") === "true") {
+    document.getElementById("adminLock").style.display = "none";
+  }
+});
+</script>
