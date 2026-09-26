@@ -2562,3 +2562,475 @@ body > *:not(.kiruu-live-bg) {
   .live-scan {
     animation: none !important;
   }
+
+/* =========================================
+   KIRUU LEGEND TEAM — LIVE ANIMATION
+========================================= */
+
+.legend-team{
+  position:relative;
+  width:min(1100px,92%);
+  margin:100px auto 70px;
+  padding:20px 0;
+  isolation:isolate;
+}
+
+.legend-heading{
+  text-align:center;
+  margin-bottom:38px;
+}
+
+.legend-heading > span{
+  display:inline-block;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:3px;
+  color:#b98cff;
+  margin-bottom:12px;
+  animation:legendPulse 2s ease-in-out infinite;
+}
+
+.legend-heading h2{
+  margin:0;
+  font-size:clamp(32px,6vw,58px);
+  font-weight:1000;
+  letter-spacing:-2px;
+}
+
+.legend-heading h2 b{
+  background:linear-gradient(
+    90deg,
+    #8b5cff,
+    #ff3cac,
+    #8b5cff
+  );
+  background-size:200% auto;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation:legendGradient 3s linear infinite;
+}
+
+.legend-heading p{
+  color:#8f899d;
+  margin-top:10px;
+}
+
+
+/* CARD */
+
+.legend-card{
+  position:relative;
+  overflow:hidden;
+  min-height:310px;
+  margin:22px 0;
+  padding:38px;
+  border-radius:30px;
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(155,92,255,.16),
+      transparent 35%
+    ),
+    rgba(10,8,17,.82);
+  border:1px solid rgba(255,255,255,.09);
+  box-shadow:
+    0 25px 80px rgba(0,0,0,.45),
+    inset 0 1px rgba(255,255,255,.06);
+  backdrop-filter:blur(22px);
+  transform:translateZ(0);
+  transition:
+    transform .45s cubic-bezier(.2,.8,.2,1),
+    border-color .45s,
+    box-shadow .45s;
+  animation:cardAppear .8s ease both;
+}
+
+.legend-card:nth-child(3){
+  animation-delay:.2s;
+}
+
+.legend-card:hover{
+  transform:
+    translateY(-8px)
+    perspective(900px)
+    rotateX(1deg);
+  border-color:rgba(177,104,255,.42);
+  box-shadow:
+    0 35px 100px rgba(0,0,0,.58),
+    0 0 60px rgba(145,75,255,.12);
+}
+
+
+/* MOVING BORDER */
+
+.legend-card::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:32px;
+  padding:2px;
+  background:
+    linear-gradient(
+      110deg,
+      transparent 15%,
+      #8b5cff,
+      #ff3cac,
+      transparent 70%
+    );
+  background-size:250% 100%;
+  animation:borderRun 4s linear infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  pointer-events:none;
+}
+
+
+/* SHINE */
+
+.card-shine{
+  position:absolute;
+  width:160px;
+  height:600px;
+  top:-150px;
+  left:-250px;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.13),
+    transparent
+  );
+  transform:rotate(20deg);
+  animation:shineRun 5s ease-in-out infinite;
+  pointer-events:none;
+}
+
+
+/* ROLE */
+
+.role-badge{
+  position:absolute;
+  top:22px;
+  right:22px;
+  padding:9px 13px;
+  border-radius:50px;
+  color:#fff;
+  font-size:10px;
+  font-weight:1000;
+  letter-spacing:1px;
+  background:linear-gradient(
+    100deg,
+    #7040ff,
+    #bd52ff,
+    #ff3cac
+  );
+  box-shadow:0 0 25px rgba(155,92,255,.3);
+  animation:badgeFloat 3s ease-in-out infinite;
+}
+
+.partner-badge{
+  background:linear-gradient(
+    100deg,
+    #ff3cac,
+    #ff7b4a,
+    #8b5cff
+  );
+}
+
+
+/* AVATAR */
+
+.legend-avatar{
+  position:relative;
+  width:125px;
+  height:125px;
+  display:grid;
+  place-items:center;
+  margin-bottom:22px;
+}
+
+.avatar-inner{
+  position:relative;
+  z-index:2;
+  width:95px;
+  height:95px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:#fff;
+  font-size:42px;
+  font-weight:1000;
+  background:
+    linear-gradient(145deg,#161022,#08060d);
+  border:2px solid rgba(255,255,255,.16);
+  box-shadow:
+    inset 0 0 25px rgba(155,92,255,.18),
+    0 0 35px rgba(155,92,255,.2);
+}
+
+.avatar-glow{
+  position:absolute;
+  inset:4px;
+  border-radius:50%;
+  background:conic-gradient(
+    #8b5cff,
+    #ff3cac,
+    #54c7ff,
+    #8b5cff
+  );
+  filter:blur(5px);
+  animation:avatarSpin 4s linear infinite;
+}
+
+.avatar-glow::after{
+  content:"";
+  position:absolute;
+  inset:5px;
+  border-radius:50%;
+  background:#09070f;
+}
+
+
+/* INFO */
+
+.legend-info{
+  position:relative;
+  z-index:2;
+}
+
+.verified{
+  color:#65ffad;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1.5px;
+  margin-bottom:7px;
+}
+
+.legend-info h3{
+  margin:0;
+  font-size:clamp(27px,5vw,43px);
+  font-weight:1000;
+  letter-spacing:-1px;
+}
+
+.legend-info h3 span{
+  background:linear-gradient(90deg,#9b5cff,#ff3cac);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.legend-info p{
+  color:#888295;
+  margin-top:7px;
+}
+
+
+/* INSTAGRAM */
+
+.insta-btn{
+  position:absolute;
+  right:38px;
+  bottom:38px;
+  z-index:5;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:14px 18px;
+  color:#fff;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:900;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;
+  background:
+    linear-gradient(
+      110deg,
+      rgba(125,70,255,.75),
+      rgba(255,60,172,.75)
+    );
+  box-shadow:
+    0 12px 35px rgba(150,70,255,.25);
+  overflow:hidden;
+  transition:.3s;
+}
+
+.insta-btn::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-120%;
+  width:70%;
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.3),
+    transparent
+  );
+  transform:skewX(-20deg);
+  animation:buttonShine 3s infinite;
+}
+
+.insta-btn:hover{
+  transform:translateY(-4px) scale(1.03);
+  box-shadow:
+    0 18px 45px rgba(255,60,172,.3),
+    0 0 30px rgba(155,92,255,.2);
+}
+
+.insta-icon{
+  font-size:22px;
+  line-height:1;
+}
+
+.insta-btn b{
+  font-size:17px;
+}
+
+
+/* PARTICLES */
+
+.particles i{
+  position:absolute;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:#b783ff;
+  box-shadow:0 0 12px #a86dff;
+  animation:particleFloat 5s linear infinite;
+}
+
+.particles i:nth-child(1){
+  left:12%;bottom:10%;animation-delay:0s;
+}
+.particles i:nth-child(2){
+  left:28%;top:15%;animation-delay:1s;
+}
+.particles i:nth-child(3){
+  right:24%;top:30%;animation-delay:2s;
+}
+.particles i:nth-child(4){
+  right:10%;bottom:18%;animation-delay:3s;
+}
+.particles i:nth-child(5){
+  left:48%;bottom:8%;animation-delay:1.5s;
+}
+.particles i:nth-child(6){
+  right:40%;top:10%;animation-delay:4s;
+}
+
+
+/* ANIMATIONS */
+
+@keyframes cardAppear{
+  from{
+    opacity:0;
+    transform:translateY(40px) scale(.96);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+@keyframes legendGradient{
+  to{background-position:200% center}
+}
+
+@keyframes borderRun{
+  to{background-position:250% center}
+}
+
+@keyframes shineRun{
+  0%,45%{left:-250px}
+  65%,100%{left:120%}
+}
+
+@keyframes avatarSpin{
+  to{transform:rotate(360deg)}
+}
+
+@keyframes badgeFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
+}
+
+@keyframes buttonShine{
+  0%{left:-120%}
+  45%,100%{left:150%}
+}
+
+@keyframes particleFloat{
+  0%{
+    transform:translateY(30px) scale(.5);
+    opacity:0;
+  }
+  25%{opacity:1}
+  75%{opacity:1}
+  100%{
+    transform:translateY(-100px) translateX(35px) scale(1.2);
+    opacity:0;
+  }
+}
+
+@keyframes legendPulse{
+  50%{
+    text-shadow:
+      0 0 15px rgba(155,92,255,.8);
+  }
+}
+
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+  .legend-team{
+    width:94%;
+    margin-top:65px;
+  }
+
+  .legend-card{
+    min-height:390px;
+    padding:27px 22px;
+    border-radius:24px;
+  }
+
+  .role-badge{
+    top:17px;
+    right:17px;
+  }
+
+  .legend-avatar{
+    width:105px;
+    height:105px;
+  }
+
+  .avatar-inner{
+    width:80px;
+    height:80px;
+    font-size:34px;
+  }
+
+  .insta-btn{
+    position:relative;
+    right:auto;
+    bottom:auto;
+    width:100%;
+    justify-content:center;
+    margin-top:25px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .legend-card,
+  .card-shine,
+  .avatar-glow,
+  .particles i,
+  .legend-heading h2 b{
+    animation:none!important;
+  }
+}
