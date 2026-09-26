@@ -1,22 +1,490 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KIRUU STORE — Control Center</title><link rel="stylesheet" href="admin.css"></head>
-<body><div class="orb o1"></div><div class="orb o2"></div>
-<header><a href="/" class="brand"><b>K</b><span>KIRUU STORE<small>CONTROL CENTER</small></span></a><a href="/">View Store ↗</a></header>
-<main>
-<section class="hero"><span>OWNER DASHBOARD</span><h1>Run your store.</h1><p>Add apps, upload files, manage releases and keep the KIRUU library fresh.</p></section>
-<section class="stats"><div><small>ALL ITEMS</small><b id="count">0</b></div><div><small>GAMES</small><b id="games">0</b></div><div><small>FEATURED</small><b id="featured">0</b></div></section>
-<section class="panel"><div class="title"><span>NEW RELEASE</span><h2>Add app / game</h2></div>
-<form id="form" enctype="multipart/form-data"><div class="grid">
-<label>App name<input name="name" required placeholder="KIRUU Player"></label>
-<label>Category<select name="category"><option>Games</option><option>Social</option><option>Tools</option><option>Entertainment</option><option>Other</option></select></label>
-<label>Version<input name="version" placeholder="1.0.0"></label>
-<label>Size<input name="size" placeholder="100 MB"></label>
-<label>Rating<input name="rating" type="number" min="0" max="5" step=".1" value="5"></label>
-<label>Downloads<input name="downloads" type="number" min="0" value="0"></label>
-<label class="wide">Icon URL<input name="icon" placeholder="https://.../icon.png"></label>
-<label class="wide">Download URL <input name="download" placeholder="https://your-authorized-file-link.com/app.apk"></label>
-<label class="wide file">OR upload APK/file<input name="file" type="file" accept=".apk,.zip,.xapk,.apks,.ipa,.exe,.msi,.dmg,.pdf"></label>
-<label class="wide">Description<textarea name="description" rows="4" placeholder="Tell users about this release..."></textarea></label>
-</div><label class="check"><input type="checkbox" name="featured"> Featured release</label><button>Add to KIRUU STORE <span>→</span></button></form><div id="msg"></div></section>
-<section class="panel"><div class="title"><span>LIBRARY</span><h2>Manage releases</h2></div><div id="list"></div></section>
-</main><footer>Made by <b>Kiran</b> · KIRUU STORE</footer><script src="admin.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KIRUU STORE — Admin</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/admin.css">
+</head>
+
+<body>
+
+<div class="noise"></div>
+
+<div class="bg-glow glow-one"></div>
+<div class="bg-glow glow-two"></div>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <a href="/" class="brand">
+        <div class="brand-logo">K</div>
+
+        <div>
+            <strong>KIRUU</strong>
+            <small>STORE</small>
+        </div>
+    </a>
+
+    <div class="side-label">MANAGEMENT</div>
+
+    <nav>
+
+        <a href="#dashboard" class="nav-item active">
+            <span>⌂</span>
+            Dashboard
+        </a>
+
+        <a href="#add" class="nav-item">
+            <span>＋</span>
+            Add Release
+        </a>
+
+        <a href="#library" class="nav-item">
+            <span>▣</span>
+            Library
+        </a>
+
+        <a href="/" class="nav-item">
+            <span>↗</span>
+            View Store
+        </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <div class="owner-card">
+
+            <div class="owner-avatar">K</div>
+
+            <div>
+                <strong>Kiran</strong>
+                <small>Store Owner</small>
+            </div>
+
+            <span class="online"></span>
+
+        </div>
+
+        <div class="made">
+            Made with ♥ by <b>Kiran</b>
+        </div>
+
+    </div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+<header class="topbar">
+
+    <div class="mobile-brand">
+        <div class="brand-logo">K</div>
+        <strong>KIRUU STORE</strong>
+    </div>
+
+    <div class="top-actions">
+
+        <div class="status">
+            <span></span>
+            Store Online
+        </div>
+
+        <a href="/" class="store-btn">
+            View Store
+            <span>↗</span>
+        </a>
+
+    </div>
+
+</header>
+
+
+<section id="dashboard" class="page">
+
+<div class="welcome">
+
+    <div>
+
+        <div class="mini-title">
+            KIRUU STORE
+            <span>ADMIN</span>
+        </div>
+
+        <h1>
+            Welcome back,
+            <em>Kiran.</em>
+        </h1>
+
+        <p>
+            Manage your apps, games and releases from one powerful control center.
+        </p>
+
+    </div>
+
+    <div class="welcome-orb">
+        <div>K</div>
+    </div>
+
+</div>
+
+
+<!-- STATS -->
+
+<div class="stats">
+
+    <div class="stat-card purple">
+
+        <div class="stat-icon">▣</div>
+
+        <div class="stat-info">
+            <small>Total Releases</small>
+            <strong id="totalApps">0</strong>
+        </div>
+
+        <span class="stat-arrow">↗</span>
+
+    </div>
+
+
+    <div class="stat-card blue">
+
+        <div class="stat-icon">🎮</div>
+
+        <div class="stat-info">
+            <small>Games</small>
+            <strong id="totalGames">0</strong>
+        </div>
+
+        <span class="stat-arrow">↗</span>
+
+    </div>
+
+
+    <div class="stat-card green">
+
+        <div class="stat-icon">★</div>
+
+        <div class="stat-info">
+            <small>Featured</small>
+            <strong id="totalFeatured">0</strong>
+        </div>
+
+        <span class="stat-arrow">↗</span>
+
+    </div>
+
+
+    <div class="stat-card orange">
+
+        <div class="stat-icon">↓</div>
+
+        <div class="stat-info">
+            <small>Total Downloads</small>
+            <strong id="totalDownloads">0</strong>
+        </div>
+
+        <span class="stat-arrow">↗</span>
+
+    </div>
+
+</div>
+
+
+<!-- ADD -->
+
+<section id="add" class="panel">
+
+    <div class="panel-head">
+
+        <div>
+
+            <div class="panel-label">
+                NEW RELEASE
+            </div>
+
+            <h2>Add App / Game</h2>
+
+            <p>
+                Publish a new release to your KIRUU STORE library.
+            </p>
+
+        </div>
+
+        <div class="panel-number">
+            01
+        </div>
+
+    </div>
+
+
+<form id="appForm" enctype="multipart/form-data">
+
+<div class="form-grid">
+
+    <div class="field">
+
+        <label>APP NAME</label>
+
+        <input
+            name="name"
+            required
+            placeholder="Example: KIRUU Player"
+        >
+
+    </div>
+
+
+    <div class="field">
+
+        <label>CATEGORY</label>
+
+        <select name="category">
+
+            <option>Games</option>
+            <option>Social</option>
+            <option>Tools</option>
+            <option>Entertainment</option>
+            <option>Other</option>
+
+        </select>
+
+    </div>
+
+
+    <div class="field">
+
+        <label>VERSION</label>
+
+        <input
+            name="version"
+            placeholder="1.0.0"
+        >
+
+    </div>
+
+
+    <div class="field">
+
+        <label>FILE SIZE</label>
+
+        <input
+            name="size"
+            placeholder="120 MB"
+        >
+
+    </div>
+
+
+    <div class="field">
+
+        <label>RATING</label>
+
+        <input
+            name="rating"
+            type="number"
+            min="0"
+            max="5"
+            step="0.1"
+            value="5"
+        >
+
+    </div>
+
+
+    <div class="field">
+
+        <label>DOWNLOAD COUNT</label>
+
+        <input
+            name="downloads"
+            type="number"
+            min="0"
+            value="0"
+        >
+
+    </div>
+
+
+    <div class="field full">
+
+        <label>APP ICON URL</label>
+
+        <input
+            name="icon"
+            placeholder="https://example.com/icon.png"
+        >
+
+    </div>
+
+
+    <div class="field full">
+
+        <label>DOWNLOAD URL</label>
+
+        <input
+            name="download"
+            placeholder="https://your-authorized-download-link.com/file.apk"
+        >
+
+    </div>
+
+
+    <div class="upload-zone full">
+
+        <div class="upload-icon">
+            ↑
+        </div>
+
+        <div>
+
+            <strong>Upload App File</strong>
+
+            <p>
+                APK, ZIP, XAPK, APKS and other supported files
+            </p>
+
+        </div>
+
+        <label class="upload-btn">
+
+            Choose File
+
+            <input
+                type="file"
+                name="file"
+                accept=".apk,.zip,.xapk,.apks,.ipa,.exe,.msi,.dmg"
+            >
+
+        </label>
+
+    </div>
+
+
+    <div class="field full">
+
+        <label>DESCRIPTION</label>
+
+        <textarea
+            name="description"
+            rows="5"
+            placeholder="Write something about this app or game..."
+        ></textarea>
+
+    </div>
+
+</div>
+
+
+<div class="form-footer">
+
+    <label class="featured-toggle">
+
+        <input
+            type="checkbox"
+            name="featured"
+        >
+
+        <span></span>
+
+        <div>
+            <strong>Featured Release</strong>
+            <small>Show this item in the featured section</small>
+        </div>
+
+    </label>
+
+
+    <button class="publish-btn" type="submit">
+
+        <span class="btn-text">
+            Publish Release
+        </span>
+
+        <span class="btn-arrow">
+            →
+        </span>
+
+    </button>
+
+</div>
+
+<div id="message"></div>
+
+</form>
+
+</section>
+
+
+<!-- LIBRARY -->
+
+<section id="library" class="panel library-panel">
+
+<div class="panel-head">
+
+    <div>
+
+        <div class="panel-label">
+            STORE LIBRARY
+        </div>
+
+        <h2>Your Releases</h2>
+
+        <p>
+            Manage everything currently published.
+        </p>
+
+    </div>
+
+    <div class="library-count" id="libraryCount">
+        0 ITEMS
+    </div>
+
+</div>
+
+
+<div id="appList" class="app-list">
+
+    <div class="loading">
+        Loading library...
+    </div>
+
+</div>
+
+</section>
+
+</section>
+
+<footer>
+
+    <span>© 2026 KIRUU STORE</span>
+
+    <span>
+        Made by <b>Kiran</b>
+    </span>
+
+</footer>
+
+</main>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="/admin.js"></script>
+
+</body>
+</html>
