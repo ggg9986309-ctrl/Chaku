@@ -1,311 +1,169 @@
 const ADMIN_KEY = "90190482989535573493";
 
-const $ = id 
-  document.getElementById(id);
+const lockScreen = document.getElementById("lockScreen");
+const adminPanel = document.getElementById("adminPanel");
+const adminKey = document.getElementById("adminKey");
+const unlockBtn = document.getElementById("unlockBtn");
+const loginMsg = document.getElementById("loginMsg");
+const showKey = document.getElementById("showKey");
+
+const form = document.getElementById("appForm");
+const publishBtn = document.getElementById("publishBtn");
+const formMsg = document.getElementById("formMsg");
+
+const library = document.getElementById("library");
+const totalApps = document.getElementById("totalApps");
+const featuredApps = document.getElementById("featuredApps");
+const totalDownloads = document.getElementById("totalDownloads");
+
+const refreshBtn = document.getElementById("refreshBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const toast = document.getElementById("toast");
+
+let apps = [];
 
 
 /* =========================
-   ADMIN FETCH
+   KEY SHOW / HIDE
 ========================= */
 
-async function adminFetch(url, options = {}) {
-
-  options.headers = {
-    ...(options.headers || {}),
-    "x-admin-key": ADMIN_KEY
-  };
-
-  return fetch(url, options);
-}
-
-
-/* =========================
-   LOCK
-========================= */
-
-$("unlockBtn").addEventListener(
-  "click",
-  unlock
-);
-
-$("adminKey").addEventListener(
-  "keydown",
-  e => {
-    if (e.key === "Enter") {
-      unlock();
-    }
+showKey.addEventListener("click", () => {
+  if (adminKey.type === "password") {
+    adminKey.type = "text";
+    showKey.textContent = "🙈";
+  } else {
+    adminKey.type = "password";
+    showKey.textContent = "👁";
   }
-);
+});
 
+
+/* =========================
+   UNLOCK
+========================= */
+
+unlockBtn.addEventListener("click", unlock);
+
+adminKey.addEventListener("keydown", e => {
+  if (e.key === "Enter") unlock();
+});
 
 function unlock() {
 
-  const key =
-    $("adminKey").value.trim();
+  const key = adminKey.value.trim();
 
-  if (key === ADMIN_KEY) {
-
-    sessionStorage.setItem(
-      "kiruu_admin",
-      "true"
-    );
-
-    $("adminLock")
-      .classList
-      .add("hidden");
-
-    loadApps();
-
-  } else {
-
-    $("lockError").textContent =
-      "❌ Wrong admin key";
-
-    $("adminKey").value = "";
+  if (!key) {
+    showLogin("⚠️ Admin key enter karo.", false);
+    shake();
+    return;
   }
+
+  unlockBtn.disabled = true;
+  unlockBtn.innerHTML = "VERIFYING <span>•••</span>";
+
+  setTimeout(() => {
+
+    if (key === ADMIN_KEY) {
+
+      sessionStorage.setItem("kiruu_admin_key", key);
+
+      loginMsg.style.color = "#62ffae";
+      loginMsg.textContent = "✓ ACCESS GRANTED";
+
+      lockScreen.style.transition = "1s";
+      lockScreen.style.transform = "scale(1.08)";
+      lockScreen.style.opacity = "0";
+
+      setTimeout(() => {
+        lockScreen.style.display = "none";
+        adminPanel.style.display = "block";
+        loadApps();
+      }, 700);
+
+    } else {
+
+      showLogin("✕ Invalid admin key", false);
+      unlockBtn.disabled = false;
+      unlockBtn.innerHTML = "<span>UNLOCK PANEL</span><b>→</b>";
+
+      shake();
+    }
+
+  }, 900);
 }
 
 
-if (
-  sessionStorage.getItem("kiruu_admin")
-  === "true"
-) {
+function showLogin(message, success) {
+  loginMsg.textContent = message;
+  loginMsg.style.color = success ? "#62ffae" : "#ff668e";
+}
 
-  $("adminLock")
-    .classList
-    .add("hidden");
+function shake() {
+  const card = document.querySelector(".lock-card");
 
+  card.animate(
+    [
+      { transform:"translateX(0)" },
+      { transform:"translateX(-10px)" },
+      { transform:"translateX(10px)" },
+      { transform:"translateX(-7px)" },
+      { transform:"translateX(7px)" },
+      { transform:"translateX(0)" }
+    ],
+    {
+      duration:450,
+      easing:"ease-out"
+    }
+  );
 }
 
 
 /* =========================
-   ICON PREVIEW
+   AUTO LOGIN
 ========================= */
 
-$("iconFile").addEventListener(
-  "change",
-  () => {
-
-    const file =
-      $("iconFile").files[0];
-
-    if (!file) {
-
-      $("iconPreview").innerHTML = "";
-
-      return;
-    }
-
-    const url =
-      URL.createObjectURL(file);
-
-    $("iconPreview").innerHTML = `
-      <img
-        src="${url}"
-        alt="App Icon"
-      >
-    `;
-  }
-);
-
-
-/* =========================
-   APK NAME
-========================= */
-
-$("apkFile").addEventListener(
-  "change",
-  () => {
-
-    const file =
-      $("apkFile").files[0];
-
-    $("fileName").textContent =
-      file
-        ? `📦 ${file.name}`
-        : "No file selected";
-  }
-);
-
-
-/* =========================
-   PUBLISH
-========================= */
-
-$("appForm").addEventListener(
-  "submit",
-  async e => {
-
-    e.preventDefault();
-
-    const apk =
-      $("apkFile").files[0];
-
-    if (!apk) {
-
-      alert(
-        "Pehle APK select karo."
-      );
-
-      return;
-    }
-
-
-    const formData =
-      new FormData();
-
-    formData.append(
-      "name",
-      $("name").value
-    );
-
-    formData.append(
-      "category",
-      $("category").value
-    );
-
-    formData.append(
-      "version",
-      $("version").value
-    );
-
-    formData.append(
-      "size",
-      $("size").value
-    );
-
-    formData.append(
-      "description",
-      $("description").value
-    );
-
-    formData.append(
-      "rating",
-      $("rating").value
-    );
-
-    formData.append(
-      "downloads",
-      $("downloads").value
-    );
-
-    formData.append(
-      "featured",
-      $("featured").checked
-    );
-
-    // APK
-    formData.append(
-      "file",
-      apk
-    );
-
-    // ICON
-    const icon =
-      $("iconFile").files[0];
-
-    if (icon) {
-
-      formData.append(
-        "icon",
-        icon
-      );
-    }
-
-
-    const button =
-      $("publishBtn");
-
-    button.disabled = true;
-
-    button.textContent =
-      "⏳ Publishing...";
-
-
-    try {
-
-      const response =
-        await adminFetch(
-          "/api/apps",
-          {
-            method: "POST",
-            body: formData
-          }
-        );
-
-
-      const data =
-        await response.json();
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          data.message ||
-          "Upload failed"
-        );
-      }
-
-
-      alert(
-        "✅ App published successfully!"
-      );
-
-
-      $("appForm").reset();
-
-      $("iconPreview").innerHTML = "";
-
-      $("fileName").textContent =
-        "No file selected";
-
-
-      loadApps();
-
-
-    } catch (error) {
-
-      alert(
-        "❌ " + error.message
-      );
-
-    } finally {
-
-      button.disabled = false;
-
-      button.textContent =
-        "🚀 PUBLISH APP";
-    }
-
-  }
-);
+if (sessionStorage.getItem("kiruu_admin_key") === ADMIN_KEY) {
+  lockScreen.style.display = "none";
+  adminPanel.style.display = "block";
+  loadApps();
+}
 
 
 /* =========================
    LOAD APPS
 ========================= */
 
-let allApps = [];
-
-
 async function loadApps() {
 
   try {
 
-    const response =
-      await fetch("/api/apps");
+    const response = await fetch("/api/apps", {
+      cache:"no-store"
+    });
 
-    allApps =
-      await response.json();
+    if (!response.ok) {
+      throw new Error("API error");
+    }
 
-    updateStats();
+    apps = await response.json();
 
-    renderApps(allApps);
+    if (!Array.isArray(apps)) {
+      apps = [];
+    }
+
+    renderStats();
+    renderLibrary();
 
   } catch (error) {
 
     console.error(error);
 
+    library.innerHTML = `
+      <div class="empty">
+        ❌ Apps load nahi ho rahe.<br>
+        Backend/API check karo.
+      </div>
+    `;
   }
 }
 
@@ -314,125 +172,153 @@ async function loadApps() {
    STATS
 ========================= */
 
-function updateStats() {
+function renderStats() {
 
-  $("totalApps").textContent =
-    allApps.length;
+  totalApps.textContent = apps.length;
 
-  $("featuredApps").textContent =
-    allApps.filter(
-      app => app.featured
-    ).length;
+  featuredApps.textContent =
+    apps.filter(app => app.featured).length;
 
-  const downloads =
-    allApps.reduce(
-      (total, app) =>
-        total +
-        Number(app.downloads || 0),
-      0
-    );
+  const downloads = apps.reduce(
+    (sum, app) => sum + (Number(app.downloads) || 0),
+    0
+  );
 
-  $("totalDownloads").textContent =
+  totalDownloads.textContent =
     downloads.toLocaleString();
 }
 
 
 /* =========================
-   RENDER
+   LIBRARY
 ========================= */
 
-function renderApps(apps) {
-
-  const library =
-    $("library");
+function renderLibrary() {
 
   if (!apps.length) {
 
     library.innerHTML = `
-      <div class="app-item">
-        <div class="app-info">
-          <h3>No apps yet</h3>
-          <p>
-            Publish your first app above.
-          </p>
-        </div>
+      <div class="empty">
+        📦 Abhi koi app publish nahi hai.
       </div>
     `;
 
     return;
   }
 
+  library.innerHTML = apps.map(app => {
 
-  library.innerHTML =
-    apps.map(app => {
+    const icon = app.icon || "";
 
-      const icon =
-        app.icon || "";
+    return `
+      <div class="app-item">
 
+        ${
+          icon
+          ? `<img class="app-icon" src="${escapeHTML(icon)}">`
+          : `<div class="app-icon"></div>`
+        }
 
-      return `
-        <div
-          class="app-item"
-          data-id="${escapeHtml(app.id)}"
-        >
+        <div class="app-info">
+          <h3>
+            ${escapeHTML(app.name || "Untitled")}
+            ${app.featured ? " ⭐" : ""}
+          </h3>
 
-          ${
-            icon
-              ? `
-                <img
-                  class="app-icon"
-                  src="${escapeHtml(icon)}"
-                  alt=""
-                >
-              `
-              : `
-                <div class="app-icon"></div>
-              `
-          }
-
-
-          <div class="app-info">
-
-            <h3>
-              ${escapeHtml(app.name)}
-
-              ${
-                app.featured
-                  ? `
-                    <span class="featured-badge">
-                      ⭐ Featured
-                    </span>
-                  `
-                  : ""
-              }
-
-            </h3>
-
-            <p>
-              ${escapeHtml(app.category)}
-              · v${escapeHtml(app.version || "1.0.0")}
-              · ${Number(app.downloads || 0).toLocaleString()} downloads
-            </p>
-
-          </div>
-
-
-          <div class="app-actions">
-
-            <button
-              class="delete-btn"
-              onclick="deleteApp('${escapeJs(app.id)}')"
-            >
-              🗑️ Delete
-            </button>
-
-          </div>
-
+          <p>
+            ${escapeHTML(app.category || "Other")}
+            • v${escapeHTML(app.version || "1.0.0")}
+            • ${(Number(app.downloads)||0).toLocaleString()} downloads
+          </p>
         </div>
-      `;
 
-    }).join("");
+        <button
+          class="delete-btn"
+          onclick="deleteApp('${String(app.id).replace(/'/g,"\\'")}')">
+          🗑️ Delete
+        </button>
+
+      </div>
+    `;
+
+  }).join("");
 }
+
+
+/* =========================
+   PUBLISH
+========================= */
+
+form.addEventListener("submit", async e => {
+
+  e.preventDefault();
+
+  const key =
+    sessionStorage.getItem("kiruu_admin_key") || ADMIN_KEY;
+
+  const apk = document.getElementById("file").files[0];
+
+  if (!apk) {
+    showForm("❌ APK file select karo.", false);
+    return;
+  }
+
+  const data = new FormData(form);
+
+  data.set(
+    "featured",
+    document.getElementById("featured").checked
+      ? "true"
+      : "false"
+  );
+
+  publishBtn.disabled = true;
+  publishBtn.innerHTML = "🚀 UPLOADING...";
+
+  try {
+
+    const response = await fetch("/api/apps", {
+      method:"POST",
+      headers:{
+        "x-admin-key":key
+      },
+      body:data
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(
+        result.message || "Publish failed"
+      );
+    }
+
+    showForm(
+      "✓ App successfully published!",
+      true
+    );
+
+    showToast("🚀 App Published Successfully!");
+
+    form.reset();
+
+    await loadApps();
+
+  } catch(error) {
+
+    console.error(error);
+
+    showForm(
+      "❌ " + error.message,
+      false
+    );
+
+  } finally {
+
+    publishBtn.disabled = false;
+    publishBtn.innerHTML = "🚀 PUBLISH APP";
+  }
+});
 
 
 /* =========================
@@ -441,118 +327,105 @@ function renderApps(apps) {
 
 async function deleteApp(id) {
 
-  const ok =
-    confirm(
-      "Is app ko permanently delete karna hai?"
-    );
+  if (!confirm("Is app ko delete karna hai?")) {
+    return;
+  }
 
-  if (!ok) return;
-
+  const key =
+    sessionStorage.getItem("kiruu_admin_key") || ADMIN_KEY;
 
   try {
 
-    const response =
-      await adminFetch(
-        `/api/apps/${encodeURIComponent(id)}`,
-        {
-          method: "DELETE"
+    const response = await fetch(
+      "/api/apps/" + encodeURIComponent(id),
+      {
+        method:"DELETE",
+        headers:{
+          "x-admin-key":key
         }
-      );
+      }
+    );
 
+    const result = await response.json();
 
-    const data =
-      await response.json();
-
-
-    if (!response.ok) {
-
+    if (!response.ok || !result.success) {
       throw new Error(
-        data.message ||
-        "Delete failed"
+        result.message || "Delete failed"
       );
     }
 
-
-    alert(
-      "🗑️ App deleted."
-    );
+    showToast("🗑️ App Deleted");
 
     loadApps();
 
+  } catch(error) {
 
-  } catch (error) {
-
-    alert(
-      "❌ " + error.message
-    );
-  }
-}
-
-
-/* =========================
-   SEARCH
-========================= */
-
-$("search").addEventListener(
-  "input",
-  e => {
-
-    const query =
-      e.target.value
-        .toLowerCase()
-        .trim();
-
-
-    const filtered =
-      allApps.filter(app =>
-        String(app.name || "")
-          .toLowerCase()
-          .includes(query)
-        ||
-        String(app.category || "")
-          .toLowerCase()
-          .includes(query)
-      );
-
-
-    renderApps(filtered);
+    showToast("❌ " + error.message);
 
   }
-);
-
-
-/* =========================
-   SECURITY HELPERS
-========================= */
-
-function escapeHtml(value) {
-
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-
-function escapeJs(value) {
-
-  return String(value ?? "")
-    .replaceAll("\\", "\\\\")
-    .replaceAll("'", "\\'");
 }
 
 
 /* =========================
-   START
+   REFRESH
 ========================= */
 
-if (
-  sessionStorage.getItem("kiruu_admin")
-  === "true"
-) {
+refreshBtn.addEventListener("click", async () => {
 
-  loadApps();
+  refreshBtn.textContent = "↻ Loading...";
 
+  await loadApps();
+
+  refreshBtn.textContent = "↻ Refresh";
+
+  showToast("✓ Library refreshed");
+});
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+logoutBtn.addEventListener("click", () => {
+
+  sessionStorage.removeItem("kiruu_admin_key");
+
+  location.reload();
+});
+
+
+/* =========================
+   MESSAGES
+========================= */
+
+function showForm(message, success) {
+
+  formMsg.textContent = message;
+  formMsg.style.color =
+    success ? "#62ffae" : "#ff668e";
+}
+
+function showToast(message) {
+
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2500);
+}
+
+
+/* =========================
+   SECURITY DISPLAY
+========================= */
+
+function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
