@@ -2,365 +2,200 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>KIRUU ADMIN</title>
-
-  <link rel="stylesheet" href="admin.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KIRUU STORE • Admin</title>
+  <link rel="stylesheet" href="/admin.css">
 </head>
-
 <body>
 
-<!-- =========================
-     ADMIN LOCK
-========================= -->
-
-<div id="adminLock" class="admin-lock">
-
-  <div class="lock-card">
-
-    <div class="lock-logo">🔐</div>
-
-    <h1>KIRUU ADMIN</h1>
-
-    <p>
-      Enter your admin key to continue
-    </p>
-
-    <input
-      id="adminKey"
-      type="password"
-      placeholder="Admin Key"
-      autocomplete="off"
-    >
-
-    <button id="unlockBtn">
-      UNLOCK
-    </button>
-
-    <div id="lockError"></div>
-
-  </div>
-
+<div class="bg">
+  <span></span><span></span><span></span><span></span>
 </div>
 
+<!-- LOCK -->
+<section id="lockScreen" class="lock-screen">
+  <div class="lock-card">
+    <div class="logo">KIRUU<span>STORE</span></div>
 
-<!-- =========================
-     ADMIN APP
-========================= -->
+    <div class="lock-icon">🔐</div>
 
-<div id="adminApp" class="hidden">
+    <h1>Admin Access</h1>
+    <p>Enter your secure admin key</p>
 
-  <header class="topbar">
-
-    <div>
-      <span class="brand">KIRUU</span>
-      <span class="brand-sub">ADMIN</span>
+    <div class="key-box">
+      <input id="adminKey" type="password" placeholder="Enter Admin Key"
+             autocomplete="off">
+      <button id="showKey" type="button">👁</button>
     </div>
 
-    <a href="/" target="_blank">
-      View Store ↗
-    </a>
+    <button id="unlockBtn" class="unlock-btn">
+      <span>UNLOCK PANEL</span>
+      <b>→</b>
+    </button>
 
+    <div id="loginMsg"></div>
+
+    <small>MADE BY KIRUU • KIRAN</small>
+  </div>
+</section>
+
+<!-- ADMIN -->
+<main id="adminPanel" class="admin-panel">
+
+  <header class="topbar">
+    <div>
+      <div class="brand">KIRUU<span>STORE</span></div>
+      <p>ADMIN CONTROL CENTER</p>
+    </div>
+
+    <div class="top-actions">
+      <span id="onlineStatus" class="online">
+        <i></i> ONLINE
+      </span>
+      <a href="/" class="store-btn">VIEW STORE ↗</a>
+      <button id="logoutBtn" class="logout">LOCK</button>
+    </div>
   </header>
 
+  <section class="hero">
+    <div>
+      <span class="badge">⚡ ADMIN DASHBOARD</span>
+      <h1>Control your<br><span>STORE.</span></h1>
+      <p>Publish, manage and control your apps from one place.</p>
+    </div>
+  </section>
 
-  <main class="container">
-
-    <section class="hero">
-
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
       <div>
-        <p class="eyebrow">
-          CONTROL CENTER
-        </p>
-
-        <h1>
-          Manage your store.
-        </h1>
-
-        <p>
-          Upload apps, choose icons from your gallery
-          and publish directly to KIRUU STORE.
-        </p>
-      </div>
-
-    </section>
-
-
-    <!-- =====================
-         STATS
-    ====================== -->
-
-    <section class="stats">
-
-      <div class="stat-card">
-        <span>Total Apps</span>
+        <small>PUBLISHED APPS</small>
         <strong id="totalApps">0</strong>
       </div>
+    </div>
 
-      <div class="stat-card">
-        <span>Featured</span>
+    <div class="stat-card">
+      <div class="stat-icon">⭐</div>
+      <div>
+        <small>FEATURED</small>
         <strong id="featuredApps">0</strong>
       </div>
+    </div>
 
-      <div class="stat-card">
-        <span>Downloads</span>
+    <div class="stat-card">
+      <div class="stat-icon">⬇️</div>
+      <div>
+        <small>DOWNLOADS</small>
         <strong id="totalDownloads">0</strong>
       </div>
+    </div>
+  </section>
 
-    </section>
-
-
-    <!-- =====================
-         ADD APP
-    ====================== -->
-
-    <section class="panel">
-
-      <div class="panel-head">
-
-        <div>
-          <p class="eyebrow">PUBLISH</p>
-          <h2>Add App / Game</h2>
-        </div>
-
+  <!-- PUBLISH -->
+  <section class="panel">
+    <div class="panel-title">
+      <div>
+        <span class="mini">NEW RELEASE</span>
+        <h2>Publish App</h2>
       </div>
+      <span class="live-dot">● LIVE</span>
+    </div>
 
+    <form id="appForm">
 
-      <form id="appForm">
+      <div class="form-grid">
 
-        <div class="grid">
-
-          <div class="field">
-
-            <label>App Name</label>
-
-            <input
-              id="name"
-              name="name"
-              type="text"
-              placeholder="Example: KIRUU GAME"
-              required
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label>Category</label>
-
-            <select
-              id="category"
-              name="category"
-            >
-
-              <option>Games</option>
-              <option>Social</option>
-              <option>Tools</option>
-              <option>Entertainment</option>
-              <option>Other</option>
-
-            </select>
-
-          </div>
-
-
-          <div class="field">
-
-            <label>Version</label>
-
-            <input
-              id="version"
-              name="version"
-              type="text"
-              placeholder="1.0.0"
-              value="1.0.0"
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label>Size</label>
-
-            <input
-              id="size"
-              name="size"
-              type="text"
-              placeholder="120 MB"
-            >
-
-          </div>
-
-
-          <div class="field full">
-
-            <label>Description</label>
-
-            <textarea
-              id="description"
-              name="description"
-              placeholder="Write app description..."
-              rows="5"
-            ></textarea>
-
-          </div>
-
-
-          <!-- ICON -->
-
-          <div class="field">
-
-            <label>App Icon — Gallery</label>
-
-            <input
-              id="iconFile"
-              name="icon"
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-            >
-
-            <div
-              id="iconPreview"
-              class="icon-preview"
-            ></div>
-
-          </div>
-
-
-          <!-- APK -->
-
-          <div class="field">
-
-            <label>APK / App File</label>
-
-            <input
-              id="apkFile"
-              name="file"
-              type="file"
-              accept=".apk,application/vnd.android.package-archive"
-              required
-            >
-
-            <div
-              id="fileName"
-              class="file-name"
-            >
-              No file selected
-            </div>
-
-          </div>
-
-
-          <div class="field">
-
-            <label>Rating</label>
-
-            <input
-              id="rating"
-              name="rating"
-              type="number"
-              min="0"
-              max="5"
-              step="0.1"
-              value="5"
-            >
-
-          </div>
-
-
-          <div class="field">
-
-            <label>Downloads</label>
-
-            <input
-              id="downloads"
-              name="downloads"
-              type="number"
-              min="0"
-              value="0"
-            >
-
-          </div>
-
-
-        </div>
-
-
-        <label class="featured">
-
-          <input
-            id="featured"
-            name="featured"
-            type="checkbox"
-          >
-
-          <span>
-            ⭐ Make this app Featured
-          </span>
-
+        <label>
+          <span>APP NAME</span>
+          <input id="name" name="name" required placeholder="Example: Kiruu Tools">
         </label>
 
+        <label>
+          <span>CATEGORY</span>
+          <select id="category" name="category">
+            <option>Games</option>
+            <option>Social</option>
+            <option>Tools</option>
+            <option>Entertainment</option>
+            <option>Other</option>
+          </select>
+        </label>
 
-        <button
-          id="publishBtn"
-          class="publish-btn"
-          type="submit"
-        >
-          🚀 PUBLISH APP
-        </button>
+        <label>
+          <span>VERSION</span>
+          <input id="version" name="version" placeholder="1.0.0">
+        </label>
 
-      </form>
+        <label>
+          <span>DOWNLOADS</span>
+          <input id="downloads" name="downloads" type="number" value="0" min="0">
+        </label>
 
-    </section>
+        <label class="full">
+          <span>DESCRIPTION</span>
+          <textarea id="description" name="description"
+            placeholder="Write app description..."></textarea>
+        </label>
 
+        <label>
+          <span>RATING</span>
+          <input id="rating" name="rating" type="number"
+                 value="5" min="0" max="5" step="0.1">
+        </label>
 
-    <!-- =====================
-         LIBRARY
-    ====================== -->
+        <label class="check-box">
+          <input id="featured" name="featured" type="checkbox">
+          <div>
+            <b>⭐ Featured App</b>
+            <small>Show this app in featured section</small>
+          </div>
+        </label>
 
-    <section class="panel">
+        <label>
+          <span>APP ICON</span>
+          <input id="icon" name="icon" type="file"
+                 accept="image/png,image/jpeg,image/webp">
+        </label>
 
-      <div class="panel-head">
-
-        <div>
-          <p class="eyebrow">LIBRARY</p>
-          <h2>Your Releases</h2>
-        </div>
-
-        <input
-          id="search"
-          class="search"
-          type="search"
-          placeholder="Search apps..."
-        >
+        <label>
+          <span>APK FILE</span>
+          <input id="file" name="file" type="file" accept=".apk" required>
+        </label>
 
       </div>
 
+      <button id="publishBtn" class="publish-btn" type="submit">
+        🚀 PUBLISH APP
+      </button>
 
-      <div
-        id="library"
-        class="library"
-      ></div>
+      <div id="formMsg"></div>
+    </form>
+  </section>
 
-    </section>
+  <!-- LIBRARY -->
+  <section class="panel">
+    <div class="panel-title">
+      <div>
+        <span class="mini">YOUR LIBRARY</span>
+        <h2>Published Apps</h2>
+      </div>
 
+      <button id="refreshBtn" class="refresh">↻ Refresh</button>
+    </div>
 
-    <footer>
-      MADE BY KIRUU
-    </footer>
+    <div id="library" class="library"></div>
+  </section>
 
-  </main>
+  <footer>
+    KIRUU STORE • ADMIN PANEL<br>
+    <span>MADE BY KIRAN / KIRUU</span>
+  </footer>
 
-</div>
+</main>
 
+<div id="toast"></div>
 
-<script src="admin.js"></script>
-
+<script src="/admin.js"></script>
 </body>
 </html>
