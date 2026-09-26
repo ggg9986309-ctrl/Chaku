@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KIRUU STORE — Control Center</title><link rel="stylesheet" href="admin.css"></head>
+<body><div class="orb o1"></div><div class="orb o2"></div>
+<header><a href="/" class="brand"><b>K</b><span>KIRUU STORE<small>CONTROL CENTER</small></span></a><a href="/">View Store ↗</a></header>
+<main>
+<section class="hero"><span>OWNER DASHBOARD</span><h1>Run your store.</h1><p>Add apps, upload files, manage releases and keep the KIRUU library fresh.</p></section>
+<section class="stats"><div><small>ALL ITEMS</small><b id="count">0</b></div><div><small>GAMES</small><b id="games">0</b></div><div><small>FEATURED</small><b id="featured">0</b></div></section>
+<section class="panel"><div class="title"><span>NEW RELEASE</span><h2>Add app / game</h2></div>
+<form id="form" enctype="multipart/form-data"><div class="grid">
+<label>App name<input name="name" required placeholder="KIRUU Player"></label>
+<label>Category<select name="category"><option>Games</option><option>Social</option><option>Tools</option><option>Entertainment</option><option>Other</option></select></label>
+<label>Version<input name="version" placeholder="1.0.0"></label>
+<label>Size<input name="size" placeholder="100 MB"></label>
+<label>Rating<input name="rating" type="number" min="0" max="5" step=".1" value="5"></label>
+<label>Downloads<input name="downloads" type="number" min="0" value="0"></label>
+<label class="wide">Icon URL<input name="icon" placeholder="https://.../icon.png"></label>
+<label class="wide">Download URL <input name="download" placeholder="https://your-authorized-file-link.com/app.apk"></label>
+<label class="wide file">OR upload APK/file<input name="file" type="file" accept=".apk,.zip,.xapk,.apks,.ipa,.exe,.msi,.dmg,.pdf"></label>
+<label class="wide">Description<textarea name="description" rows="4" placeholder="Tell users about this release..."></textarea></label>
+</div><label class="check"><input type="checkbox" name="featured"> Featured release</label><button>Add to KIRUU STORE <span>→</span></button></form><div id="msg"></div></section>
+<section class="panel"><div class="title"><span>LIBRARY</span><h2>Manage releases</h2></div><div id="list"></div></section>
+</main><footer>Made by <b>Kiran</b> · KIRUU STORE</footer><script src="admin.js"></script></body></html>

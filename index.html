@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#08070d">
+<title>KIRUU STORE — Apps & Games</title>
+<meta name="description" content="KIRUU STORE — discover apps and games.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="ambient a1"></div><div class="ambient a2"></div>
+<header class="topbar">
+  <a class="logo" href="/"><span>K</span><div><b>KIRUU</b><small>STORE</small></div></a>
+  <nav><a href="#home">Home</a><a href="#trending">Trending</a><a href="#apps">Apps</a><a href="#games">Games</a></nav>
+  <button class="menu" id="menu">☰</button>
+  <a class="admin-link" href="/admin">Admin ↗</a>
+</header>
+
+<main id="home">
+<section class="hero reveal">
+  <div class="verified">● OFFICIAL KIRUU STORE <strong>✓</strong></div>
+  <p class="eyebrow">GOOD TO SEE YOU</p>
+  <h1>Discover.<br><em>Download.</em><br>Enjoy.</h1>
+  <p class="hero-copy">Your premium hub for apps & games. Clean, fast and built for the KIRUU community.</p>
+  <div class="hero-actions"><a class="primary" href="#apps">Explore Store <span>→</span></a><a class="ghost" href="#trending">View Trending</a></div>
+  <div class="hero-glass"><span>✦</span><div><b>Fresh library</b><small>New apps added regularly</small></div></div>
+</section>
+
+<section class="search-wrap reveal">
+  <div class="search"><span>⌕</span><input id="search" placeholder="Search an app or game…"><kbd>⌘ K</kbd></div>
+</section>
+
+<section class="stats reveal">
+  <div><b id="statApps">0</b><span>Total Apps</span></div>
+  <div><b>✓</b><span>Verified Library</span></div>
+  <div><b>∞</b><span>Free to Explore</span></div>
+</section>
+
+<section class="section reveal" id="trending">
+  <div class="section-head"><div><span>DISCOVER</span><h2>Trending <i>now</i></h2></div><a href="#apps">See all →</a></div>
+  <div class="cards" id="trendingGrid"></div>
+</section>
+
+<section class="banner reveal">
+  <div><span>✦ KIRUU STORE</span><h2>One place.<br><em>Your apps.</em></h2><p>Built with a premium experience for mobile users.</p></div>
+  <div class="orbit"><b>K</b></div>
+</section>
+
+<section class="section reveal" id="apps">
+  <div class="section-head"><div><span>THE LIBRARY</span><h2>All <i>Apps</i></h2></div></div>
+  <div class="filters" id="filters">
+    <button class="active" data-filter="All">All</button><button data-filter="Games">Games</button><button data-filter="Social">Social</button><button data-filter="Tools">Tools</button><button data-filter="Entertainment">Entertainment</button><button data-filter="Other">Other</button>
+  </div>
+  <div class="cards library" id="appGrid"></div>
+  <div class="empty" id="empty">No apps found. Add your first app from the Admin Panel.</div>
+</section>
+
+<section class="social reveal">
+  <span>FOLLOW KIRUU</span><h2>Stay connected.</h2><p>Updates, drops and new releases on Instagram.</p>
+  <a href="https://www.instagram.com/kiiiiiruuuuuu/" target="_blank" rel="noopener">Instagram @kiiiiiruuuuuu ↗</a>
+</section>
+</main>
+<footer><b>KIRUU STORE</b><span>© 2026 KIRUU STORE</span><span>Made by Kiran</span><a href="/admin">Admin</a></footer>
+<div class="modal" id="modal"><div class="modal-card"><button id="close">×</button><div id="modalBody"></div></div></div>
+<script src="app.js"></script>
+</body>
+</html>
