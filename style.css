@@ -3034,3 +3034,43 @@ body > *:not(.kiruu-live-bg) {
     animation:none!important;
   }
 }
+
+.app-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 14px;
+  border-radius: 14px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 13px;
+  color: #fff;
+  background: linear-gradient(135deg, #7c3cff, #b44cff);
+  border: 1px solid rgba(255,255,255,.15);
+  box-shadow: 0 8px 25px rgba(124,60,255,.25);
+  transition: .25s ease;
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(124,60,255,.45);
+}
+
+.download-btn.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .app-actions {
+    grid-template-columns: 1fr;
+  }
+}
