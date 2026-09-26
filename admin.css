@@ -972,4 +972,16 @@ footer b{
   margin-top: 12px;
   min-height: 20px;
 }
+.icon-preview {
+  margin-top: 12px;
+}
+
+.icon-preview img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.15);
+  box-shadow: 0 8px 30px rgba(0,0,0,.35);
+}
 
