@@ -1,12 +1,445 @@
-const $=s=>document.querySelector(s);let all=[],filter="All";
-const grid=$("#appGrid"),trend=$("#trendingGrid"),empty=$("#empty");
-async function load(){try{const r=await fetch("/api/apps");all=await r.json();$("#statApps").textContent=all.length;render()}catch(e){all=[];render()}}
-function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function card(a){const icon=a.icon?`<img class="icon" src="${esc(a.icon)}" onerror="this.outerHTML='<div class=icon>K</div>'">`:`<div class="icon">${esc((a.name||"K")[0].toUpperCase())}</div>`;return `<article class="card"><div onclick='openItem(${JSON.stringify(a).replace(/'/g,"&#39;")})'>${icon}<h3>${esc(a.name)}</h3><div class="meta">${esc(a.category)} • v${esc(a.version||"1.0.0")} ${a.size?"• "+esc(a.size):""}</div><p class="desc">${esc(a.description||"Premium app from KIRUU STORE.")}</p><div class="card-bottom"><span>★ ${Number(a.rating||5).toFixed(1)}</span><button class="open">View →</button></div></div></article>`}
-function render(){let q=($("#search").value||"").toLowerCase();let items=all.filter(a=>(filter==="All"||a.category===filter)&&`${a.name} ${a.category} ${a.description}`.toLowerCase().includes(q));grid.innerHTML=items.map(card).join("");empty.style.display=items.length?"none":"block";trend.innerHTML=(all.slice().sort((a,b)=>(b.downloads||0)-(a.downloads||0)).slice(0,3)).map(card).join("")||`<div class="empty">Trending apps will appear here.</div>`}
-$("#search").addEventListener("input",render);$("#filters").addEventListener("click",e=>{if(e.target.tagName==="BUTTON"){document.querySelectorAll(".filters button").forEach(x=>x.classList.remove("active"));e.target.classList.add("active");filter=e.target.dataset.filter;render()}});
-function openItem(a){$("#modalBody").innerHTML=`<div class="icon">${a.icon?`<img class="icon" src="${esc(a.icon)}">`:(a.name||"K")[0]}</div><h2>${esc(a.name)}</h2><p class="meta">${esc(a.category)} • v${esc(a.version||"1.0.0")} • ${esc(a.size||"Size not listed")}</p><p>${esc(a.description||"No description available.")}</p><p class="meta">★ ${Number(a.rating||5).toFixed(1)} • ${Number(a.downloads||0).toLocaleString()} downloads</p>${a.download?`<a class="primary" style="display:inline-block;margin-top:15px" href="${esc(a.download)}">Download ↗</a>`:`<span class="meta">Download link coming soon.</span>`}`;$("#modal").classList.add("show")}
-$("#close").onclick=()=>$("#modal").classList.remove("show");$("#modal").onclick=e=>{if(e.target.id==="modal")$("#modal").classList.remove("show")};
-new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add("visible")),{threshold:.08}).observe(document.querySelector(".hero"));
-document.querySelectorAll(".reveal").forEach(x=>new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add("visible")),{threshold:.08}).observe(x));
-load();
+const state = {
+  apps: [],
+  category: "all",
+  search: ""
+};
+
+const $ = (selector) => document.querySelector(selector);
+
+const appsGrid = $("#appsGrid");
+const trendingGrid = $("#trendingGrid");
+const searchInput = $("#searchInput");
+const clearSearch = $("#clearSearch");
+const emptyState = $("#emptyState");
+const resultCount = $("#resultCount");
+
+function escapeHTML(value = "") {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function formatNumber(number) {
+  const n = Number(number) || 0;
+
+  if (n >= 1000000) {
+    return (n / 1000000).toFixed(1).replace(".0", "") + "M";
+  }
+
+  if (n >= 1000) {
+    return (n / 1000).toFixed(1).replace(".0", "") + "K";
+  }
+
+  return n.toString();
+}
+
+function getIcon(app) {
+  if (app.icon && app.icon.trim()) {
+    return app.icon;
+  }
+
+  return "data:image/svg+xml," + encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160">
+      <rect width="160" height="160" rx="35" fill="#171522"/>
+      <text x="80" y="105"
+        text-anchor="middle"
+        font-size="70"
+        font-family="Arial"
+        font-weight="bold"
+        fill="white">K</text>
+    </svg>
+  `);
+}
+
+function stars(rating) {
+  const value = Math.min(5, Math.max(0, Number(rating) || 0));
+  const full = Math.round(value);
+
+  return "★".repeat(full) + "☆".repeat(5 - full);
+}
+
+function appCard(app) {
+  const id = escapeHTML(app.id || "");
+  const name = escapeHTML(app.name || "Untitled App");
+  const category = escapeHTML(app.category || "Other");
+  const version = escapeHTML(app.version || "Latest");
+  const size = escapeHTML(app.size || "—");
+  const downloads = formatNumber(app.downloads);
+  const rating = Number(app.rating || 0).toFixed(1);
+  const icon = escapeHTML(getIcon(app));
+
+  return `
+    <article class="app-card" data-id="${id}">
+
+      ${app.featured ? `
+        <div class="featured-badge">
+          ✦ Featured
+        </div>
+      ` : ""}
+
+      <div class="app-card-top">
+
+        <img
+          class="app-icon"
+          src="${icon}"
+          alt="${name}"
+          loading="lazy"
+          onerror="this.src='${escapeHTML(getIcon({}))}'"
+        >
+
+        <div class="app-main">
+          <h3>${name}</h3>
+
+          <div class="app-meta">
+            <span>${category}</span>
+            <i>•</i>
+            <span>v${version}</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="app-description">
+        ${escapeHTML(
+          app.description ||
+          "Discover this release on KIRUU STORE."
+        )}
+      </div>
+
+      <div class="app-bottom">
+
+        <div class="app-stats">
+          <span>★ ${rating}</span>
+          <span>↓ ${downloads}</span>
+        </div>
+
+        <span class="size">${size}</span>
+
+      </div>
+
+      <button class="details-btn" data-open="${id}">
+        View Details
+        <span>→</span>
+      </button>
+
+    </article>
+  `;
+}
+
+function renderStats() {
+  const total = state.apps.length;
+
+  const downloads = state.apps.reduce(
+    (sum, app) => sum + (Number(app.downloads) || 0),
+    0
+  );
+
+  $("#totalApps").textContent = total;
+  $("#safeApps").textContent = total;
+  $("#totalDownloads").textContent = formatNumber(downloads);
+}
+
+function filteredApps() {
+  return state.apps.filter((app) => {
+
+    const categoryMatch =
+      state.category === "all" ||
+      String(app.category || "Other").toLowerCase() ===
+      state.category.toLowerCase();
+
+    const text = `
+      ${app.name || ""}
+      ${app.category || ""}
+      ${app.description || ""}
+    `.toLowerCase();
+
+    const searchMatch =
+      !state.search ||
+      text.includes(state.search.toLowerCase());
+
+    return categoryMatch && searchMatch;
+  });
+}
+
+function renderApps() {
+  const apps = filteredApps();
+
+  resultCount.textContent =
+    `${apps.length} release${apps.length === 1 ? "" : "s"}`;
+
+  if (!apps.length) {
+    appsGrid.innerHTML = "";
+    emptyState.classList.remove("hidden");
+    return;
+  }
+
+  emptyState.classList.add("hidden");
+
+  appsGrid.innerHTML = apps.map(appCard).join("");
+}
+
+function renderTrending() {
+  let trending = [...state.apps];
+
+  trending.sort((a, b) => {
+
+    if (Boolean(b.featured) !== Boolean(a.featured)) {
+      return b.featured ? 1 : -1;
+    }
+
+    return (Number(b.downloads) || 0) -
+           (Number(a.downloads) || 0);
+  });
+
+  trending = trending.slice(0, 4);
+
+  if (!trending.length) {
+    trendingGrid.innerHTML = `
+      <div class="no-trending">
+        Apps will appear here after you publish them from Admin.
+      </div>
+    `;
+    return;
+  }
+
+  trendingGrid.innerHTML = trending.map(appCard).join("");
+}
+
+function openModal(id) {
+  const app = state.apps.find(
+    item => String(item.id) === String(id)
+  );
+
+  if (!app) return;
+
+  $("#modalIcon").src = getIcon(app);
+  $("#modalName").textContent = app.name || "Untitled App";
+  $("#modalCategory").textContent = app.category || "Other";
+
+  $("#modalDescription").textContent =
+    app.description ||
+    "No description available.";
+
+  $("#modalVersion").textContent =
+    app.version || "Latest";
+
+  $("#modalSize").textContent =
+    app.size || "—";
+
+  $("#modalDownloads").textContent =
+    formatNumber(app.downloads);
+
+  $("#modalRating").textContent =
+    `${stars(app.rating)}  ${(Number(app.rating) || 0).toFixed(1)}`;
+
+  const download = $("#modalDownload");
+
+  if (app.download) {
+    download.href = app.download;
+    download.style.pointerEvents = "auto";
+    download.style.opacity = "1";
+  } else {
+    download.href = "#";
+    download.style.pointerEvents = "none";
+    download.style.opacity = ".5";
+  }
+
+  $("#appModal").classList.add("show");
+  document.body.classList.add("modal-open");
+}
+
+function closeModal() {
+  $("#appModal").classList.remove("show");
+  document.body.classList.remove("modal-open");
+}
+
+async function loadApps() {
+  try {
+
+    const response = await fetch("/api/apps", {
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error("API request failed");
+    }
+
+    const data = await response.json();
+
+    state.apps = Array.isArray(data)
+      ? data
+      : [];
+
+    renderStats();
+    renderTrending();
+    renderApps();
+
+  } catch (error) {
+
+    console.error(error);
+
+    state.apps = [];
+
+    renderStats();
+    renderTrending();
+    renderApps();
+
+    showToast("Store data load nahi ho paya.");
+  }
+}
+
+
+/* SEARCH */
+
+searchInput.addEventListener("input", () => {
+
+  state.search = searchInput.value.trim();
+
+  clearSearch.classList.toggle(
+    "show",
+    Boolean(state.search)
+  );
+
+  renderApps();
+});
+
+clearSearch.addEventListener("click", () => {
+
+  searchInput.value = "";
+  state.search = "";
+
+  clearSearch.classList.remove("show");
+
+  renderApps();
+  searchInput.focus();
+});
+
+
+/* CATEGORY */
+
+document.querySelectorAll(".filter").forEach(button => {
+
+  button.addEventListener("click", () => {
+
+    document
+      .querySelectorAll(".filter")
+      .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    state.category =
+      button.dataset.category || "all";
+
+    renderApps();
+  });
+
+});
+
+
+/* CARD CLICK */
+
+document.addEventListener("click", event => {
+
+  const openButton =
+    event.target.closest("[data-open]");
+
+  if (openButton) {
+    openModal(openButton.dataset.open);
+    return;
+  }
+
+  const viewAll =
+    event.target.closest("[data-scroll]");
+
+  if (viewAll) {
+
+    const target =
+      document.querySelector(viewAll.dataset.scroll);
+
+    target?.scrollIntoView({
+      behavior: "smooth"
+    });
+  }
+
+});
+
+
+/* MODAL */
+
+$("#closeModal").addEventListener(
+  "click",
+  closeModal
+);
+
+document
+  .querySelector(".modal-backdrop")
+  .addEventListener("click", closeModal);
+
+document.addEventListener("keydown", event => {
+
+  if (event.key === "Escape") {
+    closeModal();
+  }
+
+});
+
+
+/* RESET */
+
+function resetFilters() {
+
+  state.category = "all";
+  state.search = "";
+
+  searchInput.value = "";
+
+  document
+    .querySelectorAll(".filter")
+    .forEach(btn => {
+      btn.classList.toggle(
+        "active",
+        btn.dataset.category === "all"
+      );
+    });
+
+  clearSearch.classList.remove("show");
+
+  renderApps();
+}
+
+$("#resetFilters").addEventListener(
+  "click",
+  resetFilters
+);
+
+$("#emptyReset").addEventListener(
+  "click",
+  resetFilters
+);
+
+
+/* TOAST */
+
+function showToast(message) {
+
+  const toast = $("#toast");
+
+  toast.querySelector("p").textContent = message;
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2800);
+}
+
+
+/* START */
+
+loadApps();
+
+/* Refresh store data automatically */
+setInterval(loadApps, 30000);
