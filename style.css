@@ -2247,3 +2247,318 @@ footer {
     font-size: 15px !important;
   }
 }
+
+/* =========================================
+   KIRUU STORE — 100% LIVE WALLPAPER
+========================================= */
+
+.kiruu-live-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%,
+      rgba(95, 45, 180, .20),
+      transparent 42%),
+    #05030b;
+}
+
+/* Moving grid */
+.live-grid {
+  position: absolute;
+  inset: -50%;
+  opacity: .22;
+
+  background-image:
+    linear-gradient(rgba(160, 100, 255, .14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(160, 100, 255, .14) 1px, transparent 1px);
+
+  background-size: 55px 55px;
+
+  transform: perspective(700px) rotateX(62deg);
+
+  animation:
+    gridMove 10s linear infinite;
+}
+
+@keyframes gridMove {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 0 110px;
+  }
+}
+
+/* Glowing orbs */
+.live-orb {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+
+  filter: blur(75px);
+  opacity: .30;
+
+  animation:
+    orbFloat 9s ease-in-out infinite alternate;
+}
+
+.orb-one {
+  top: -150px;
+  left: -100px;
+  background: #8b35ff;
+}
+
+.orb-two {
+  right: -140px;
+  top: 20%;
+  background: #1f75ff;
+  animation-delay: -3s;
+}
+
+.orb-three {
+  left: 35%;
+  bottom: -220px;
+  background: #d52cff;
+  animation-delay: -6s;
+}
+
+@keyframes orbFloat {
+  0% {
+    transform: translate3d(-30px, -20px, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(60px, 50px, 0) scale(1.15);
+  }
+
+  100% {
+    transform: translate3d(-20px, 80px, 0) scale(.95);
+  }
+}
+
+/* Rotating rings */
+.live-ring {
+  position: absolute;
+  border: 1px solid rgba(180, 110, 255, .20);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 35px rgba(130, 60, 255, .10),
+    inset 0 0 35px rgba(130, 60, 255, .06);
+
+  animation: ringRotate 18s linear infinite;
+}
+
+.ring-one {
+  width: 650px;
+  height: 650px;
+  top: -230px;
+  right: -170px;
+}
+
+.ring-two {
+  width: 480px;
+  height: 480px;
+  bottom: -250px;
+  left: -150px;
+  animation-duration: 25s;
+  animation-direction: reverse;
+}
+
+@keyframes ringRotate {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(180deg) scale(1.08);
+  }
+
+  to {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* Stars */
+.live-stars {
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.75) 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(180,130,255,.55) 1px, transparent 1.5px);
+
+  background-size:
+    85px 85px,
+    135px 135px;
+
+  background-position:
+    10px 20px,
+    50px 80px;
+
+  opacity: .35;
+
+  animation: starsMove 18s linear infinite;
+}
+
+@keyframes starsMove {
+  from {
+    transform: translate3d(0,0,0);
+  }
+
+  to {
+    transform: translate3d(-80px,120px,0);
+  }
+}
+
+/* Floating particle layer */
+.live-particles {
+  position: absolute;
+  inset: 0;
+
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.8) 1px, transparent 2px),
+    radial-gradient(circle, rgba(150,90,255,.8) 1px, transparent 2px),
+    radial-gradient(circle, rgba(80,170,255,.7) 1px, transparent 2px);
+
+  background-size:
+    170px 170px,
+    230px 230px,
+    310px 310px;
+
+  background-position:
+    20px 30px,
+    90px 120px,
+    150px 50px;
+
+  opacity: .22;
+
+  animation:
+    particlesFloat 14s ease-in-out infinite alternate;
+}
+
+@keyframes particlesFloat {
+  from {
+    transform: translate3d(0,0,0) scale(1);
+  }
+
+  to {
+    transform: translate3d(40px,-70px,0) scale(1.04);
+  }
+}
+
+/* Moving light scan */
+.live-scan {
+  position: absolute;
+
+  width: 180%;
+  height: 180px;
+
+  left: -40%;
+  top: -250px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(170,100,255,.08),
+      rgba(255,255,255,.12),
+      rgba(170,100,255,.08),
+      transparent
+    );
+
+  filter: blur(25px);
+
+  transform: rotate(-12deg);
+
+  animation:
+    scanMove 8s ease-in-out infinite;
+}
+
+@keyframes scanMove {
+  0% {
+    top: -250px;
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  50% {
+    top: 55%;
+    opacity: .8;
+  }
+
+  80% {
+    opacity: .4;
+  }
+
+  100% {
+    top: 120%;
+    opacity: 0;
+  }
+}
+
+/* Extra dark glass overlay */
+.kiruu-live-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 0%,
+      rgba(3,1,10,.12) 50%,
+      rgba(2,1,7,.62) 100%
+    );
+
+  pointer-events: none;
+}
+
+/* Keep website content above wallpaper */
+body > *:not(.kiruu-live-bg) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+
+  .live-grid {
+    background-size: 38px 38px;
+  }
+
+  .live-orb {
+    width: 260px;
+    height: 260px;
+    filter: blur(55px);
+  }
+
+  .ring-one {
+    width: 430px;
+    height: 430px;
+  }
+
+  .ring-two {
+    width: 350px;
+    height: 350px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .live-grid,
+  .live-orb,
+  .live-ring,
+  .live-stars,
+  .live-particles,
+  .live-scan {
+    animation: none !important;
+  }
